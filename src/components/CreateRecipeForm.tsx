@@ -1,12 +1,26 @@
 import { useState } from "react";
-import { Plus, X, Clock, ChefHat, Users, Timer, Image as ImageIcon } from "lucide-react";
+import {
+  Plus,
+  X,
+  Clock,
+  ChefHat,
+  Users,
+  Timer,
+  Image as ImageIcon,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Separator } from "./ui/separator";
 import { Recipe, Ingredient, RecipeStep } from "../types/recipe";
@@ -22,7 +36,12 @@ interface CreateRecipeFormProps {
   };
 }
 
-export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: CreateRecipeFormProps) {
+export function CreateRecipeForm({
+  isOpen,
+  onClose,
+  onSave,
+  currentUser,
+}: CreateRecipeFormProps) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -32,7 +51,7 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
     servings: 4,
     difficulty: "Easy",
     category: "dinner",
-    notes: ""
+    notes: "",
   });
 
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -45,24 +64,34 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
       id: `ingredient-${Date.now()}`,
       name: "",
       amount: "",
-      unit: ""
+      unit: "",
     };
     setIngredients([...ingredients, newIngredient]);
   };
 
-  const updateIngredient = (id: string, field: keyof Ingredient, value: string) => {
-    setIngredients(ingredients.map(ing => 
-      ing.id === id ? { ...ing, [field]: value } : ing
-    ));
+  const updateIngredient = (
+    id: string,
+    field: keyof Ingredient,
+    value: string
+  ) => {
+    setIngredients(
+      ingredients.map((ing) =>
+        ing.id === id ? { ...ing, [field]: value } : ing
+      )
+    );
   };
 
   const removeIngredient = (id: string) => {
-    setIngredients(ingredients.filter(ing => ing.id !== id));
+    setIngredients(ingredients.filter((ing) => ing.id !== id));
     // Also remove from steps
-    setSteps(steps.map(step => ({
-      ...step,
-      ingredientsNeeded: step.ingredientsNeeded.filter(ingId => ingId !== id)
-    })));
+    setSteps(
+      steps.map((step) => ({
+        ...step,
+        ingredientsNeeded: step.ingredientsNeeded.filter(
+          (ingId) => ingId !== id
+        ),
+      }))
+    );
   };
 
   const addStep = () => {
@@ -71,37 +100,37 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
       stepNumber: steps.length + 1,
       title: "",
       instruction: "",
-      ingredientsNeeded: []
+      ingredientsNeeded: [],
     };
     setSteps([...steps, newStep]);
   };
 
-  const updateStep = (id: string, field: keyof RecipeStep, value: any) => {
-    setSteps(steps.map(step => 
-      step.id === id ? { ...step, [field]: value } : step
-    ));
+  const updateStep = (id: string, field: keyof RecipeStep, value: unknown) => {
+    setSteps(
+      steps.map((step) => (step.id === id ? { ...step, [field]: value } : step))
+    );
   };
 
   const removeStep = (id: string) => {
-    const filteredSteps = steps.filter(step => step.id !== id);
+    const filteredSteps = steps.filter((step) => step.id !== id);
     // Renumber steps
     const renumberedSteps = filteredSteps.map((step, index) => ({
       ...step,
-      stepNumber: index + 1
+      stepNumber: index + 1,
     }));
     setSteps(renumberedSteps);
   };
 
   const addTimer = (stepId: string) => {
-    updateStep(stepId, 'timer', {
+    updateStep(stepId, "timer", {
       minutes: 5,
       seconds: 0,
-      label: 'Timer'
+      label: "Timer",
     });
   };
 
   const removeTimer = (stepId: string) => {
-    updateStep(stepId, 'timer', undefined);
+    updateStep(stepId, "timer", undefined);
   };
 
   const addTag = () => {
@@ -112,7 +141,7 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
   const handleSave = () => {
@@ -122,7 +151,7 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
       author: {
         name: currentUser.name,
         avatar: currentUser.avatar,
-        username: currentUser.username
+        username: currentUser.username,
       },
       ingredients,
       steps,
@@ -130,12 +159,12 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
       likes: 0,
       comments: 0,
       isLiked: false,
-      isSaved: false
+      isSaved: false,
     };
 
     onSave(recipe);
     onClose();
-    
+
     // Reset form
     setFormData({
       title: "",
@@ -146,7 +175,7 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
       servings: 4,
       difficulty: "Easy",
       category: "dinner",
-      notes: ""
+      notes: "",
     });
     setIngredients([]);
     setSteps([]);
@@ -174,33 +203,44 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                   id="title"
                   placeholder="Enter recipe title..."
                   value={formData.title}
-                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="image">Recipe Image URL</Label>
                 <Input
                   id="image"
                   placeholder="https://example.com/image.jpg"
                   value={formData.image}
-                  onChange={(e) => setFormData({...formData, image: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, image: e.target.value })
+                  }
                 />
               </div>
-              
+
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
                   placeholder="Describe your recipe..."
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
-                <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
+                <Select
+                  value={formData.category}
+                  onValueChange={(value: string) =>
+                    setFormData({ ...formData, category: value })
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -213,10 +253,15 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="difficulty">Difficulty</Label>
-                <Select value={formData.difficulty} onValueChange={(value) => setFormData({...formData, difficulty: value})}>
+                <Select
+                  value={formData.difficulty}
+                  onValueChange={(value: string) =>
+                    setFormData({ ...formData, difficulty: value })
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -227,27 +272,31 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="prepTime">Prep Time</Label>
                 <Input
                   id="prepTime"
                   placeholder="15 min"
                   value={formData.prepTime}
-                  onChange={(e) => setFormData({...formData, prepTime: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, prepTime: e.target.value })
+                  }
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="cookTime">Cook Time</Label>
                 <Input
                   id="cookTime"
                   placeholder="30 min"
                   value={formData.cookTime}
-                  onChange={(e) => setFormData({...formData, cookTime: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, cookTime: e.target.value })
+                  }
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="servings">Servings</Label>
                 <Input
@@ -255,7 +304,12 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                   type="number"
                   min="1"
                   value={formData.servings}
-                  onChange={(e) => setFormData({...formData, servings: parseInt(e.target.value) || 1})}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      servings: parseInt(e.target.value) || 1,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -270,13 +324,19 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                   placeholder="Add a tag..."
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && addTag()}
+                  onKeyPress={(e) => e.key === "Enter" && addTag()}
                 />
-                <Button onClick={addTag} type="button">Add</Button>
+                <Button onClick={addTag} type="button">
+                  Add
+                </Button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                  <Badge
+                    key={tag}
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
                     #{tag}
                     <Button
                       variant="ghost"
@@ -309,7 +369,9 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                     <Input
                       placeholder="Ingredient name"
                       value={ingredient.name}
-                      onChange={(e) => updateIngredient(ingredient.id, 'name', e.target.value)}
+                      onChange={(e) =>
+                        updateIngredient(ingredient.id, "name", e.target.value)
+                      }
                     />
                   </div>
                   <div className="w-20">
@@ -317,7 +379,13 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                     <Input
                       placeholder="2"
                       value={ingredient.amount}
-                      onChange={(e) => updateIngredient(ingredient.id, 'amount', e.target.value)}
+                      onChange={(e) =>
+                        updateIngredient(
+                          ingredient.id,
+                          "amount",
+                          e.target.value
+                        )
+                      }
                     />
                   </div>
                   <div className="w-20">
@@ -325,7 +393,9 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                     <Input
                       placeholder="cups"
                       value={ingredient.unit}
-                      onChange={(e) => updateIngredient(ingredient.id, 'unit', e.target.value)}
+                      onChange={(e) =>
+                        updateIngredient(ingredient.id, "unit", e.target.value)
+                      }
                     />
                   </div>
                   <Button
@@ -339,7 +409,8 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
               ))}
               {ingredients.length === 0 && (
                 <p className="text-muted-foreground text-center py-4">
-                  No ingredients added yet. Click "Add Ingredient" to start.
+                  No ingredients added yet. Click &quot;Add Ingredient&quot; to
+                  start.
                 </p>
               )}
             </div>
@@ -389,22 +460,26 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                         </Button>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label>Step Title (Optional)</Label>
                       <Input
                         placeholder="e.g., Prepare the sauce"
                         value={step.title}
-                        onChange={(e) => updateStep(step.id, 'title', e.target.value)}
+                        onChange={(e) =>
+                          updateStep(step.id, "title", e.target.value)
+                        }
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label>Instructions</Label>
                       <Textarea
                         placeholder="Describe what to do in this step..."
                         value={step.instruction}
-                        onChange={(e) => updateStep(step.id, 'instruction', e.target.value)}
+                        onChange={(e) =>
+                          updateStep(step.id, "instruction", e.target.value)
+                        }
                       />
                     </div>
 
@@ -418,10 +493,12 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                               placeholder="Minutes"
                               className="w-20"
                               value={step.timer.minutes}
-                              onChange={(e) => updateStep(step.id, 'timer', {
-                                ...step.timer!,
-                                minutes: parseInt(e.target.value) || 0
-                              })}
+                              onChange={(e) =>
+                                updateStep(step.id, "timer", {
+                                  ...step.timer!,
+                                  minutes: parseInt(e.target.value) || 0,
+                                })
+                              }
                             />
                             <span>:</span>
                             <Input
@@ -431,19 +508,23 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                               min="0"
                               max="59"
                               value={step.timer.seconds}
-                              onChange={(e) => updateStep(step.id, 'timer', {
-                                ...step.timer!,
-                                seconds: parseInt(e.target.value) || 0
-                              })}
+                              onChange={(e) =>
+                                updateStep(step.id, "timer", {
+                                  ...step.timer!,
+                                  seconds: parseInt(e.target.value) || 0,
+                                })
+                              }
                             />
                             <Input
                               placeholder="Timer label"
                               className="flex-1"
                               value={step.timer.label}
-                              onChange={(e) => updateStep(step.id, 'timer', {
-                                ...step.timer!,
-                                label: e.target.value
-                              })}
+                              onChange={(e) =>
+                                updateStep(step.id, "timer", {
+                                  ...step.timer!,
+                                  label: e.target.value,
+                                })
+                              }
                             />
                           </div>
                         </div>
@@ -456,21 +537,34 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
                         {ingredients.map((ingredient) => (
                           <Badge
                             key={ingredient.id}
-                            variant={step.ingredientsNeeded.includes(ingredient.id) ? "default" : "outline"}
+                            variant={
+                              step.ingredientsNeeded.includes(ingredient.id)
+                                ? "default"
+                                : "outline"
+                            }
                             className="cursor-pointer"
                             onClick={() => {
-                              const newIngredientsNeeded = step.ingredientsNeeded.includes(ingredient.id)
-                                ? step.ingredientsNeeded.filter(id => id !== ingredient.id)
-                                : [...step.ingredientsNeeded, ingredient.id];
-                              updateStep(step.id, 'ingredientsNeeded', newIngredientsNeeded);
+                              const newIngredientsNeeded =
+                                step.ingredientsNeeded.includes(ingredient.id)
+                                  ? step.ingredientsNeeded.filter(
+                                      (id) => id !== ingredient.id
+                                    )
+                                  : [...step.ingredientsNeeded, ingredient.id];
+                              updateStep(
+                                step.id,
+                                "ingredientsNeeded",
+                                newIngredientsNeeded
+                              );
                             }}
                           >
-                            {ingredient.name || 'Unnamed ingredient'}
+                            {ingredient.name || "Unnamed ingredient"}
                           </Badge>
                         ))}
                       </div>
                       {ingredients.length === 0 && (
-                        <p className="text-muted-foreground">Add ingredients first to assign them to steps.</p>
+                        <p className="text-muted-foreground">
+                          Add ingredients first to assign them to steps.
+                        </p>
                       )}
                     </div>
                   </div>
@@ -478,7 +572,8 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
               ))}
               {steps.length === 0 && (
                 <p className="text-muted-foreground text-center py-4">
-                  No steps added yet. Click "Add Step" to start building your recipe.
+                  No steps added yet. Click &quot;Add Step&quot; to start
+                  building your recipe.
                 </p>
               )}
             </div>
@@ -490,7 +585,9 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
             <Textarea
               placeholder="Any additional tips, variations, or notes..."
               value={formData.notes}
-              onChange={(e) => setFormData({...formData, notes: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, notes: e.target.value })
+              }
             />
           </Card>
 
@@ -501,7 +598,12 @@ export function CreateRecipeForm({ isOpen, onClose, onSave, currentUser }: Creat
             </Button>
             <Button
               onClick={handleSave}
-              disabled={!formData.title || !formData.description || ingredients.length === 0 || steps.length === 0}
+              disabled={
+                !formData.title ||
+                !formData.description ||
+                ingredients.length === 0 ||
+                steps.length === 0
+              }
             >
               Save Recipe
             </Button>
