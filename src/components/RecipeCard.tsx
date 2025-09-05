@@ -1,4 +1,11 @@
-import { Heart, MessageCircle, Bookmark, Share, Clock, Users } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  Bookmark,
+  Share,
+  Clock,
+  Users,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Avatar } from "./ui/avatar";
@@ -14,11 +21,20 @@ interface RecipeCardProps {
   onViewRecipe: (recipe: Recipe) => void;
 }
 
-export function RecipeCard({ recipe, onLike, onSave, onComment, onViewRecipe }: RecipeCardProps) {
+export function RecipeCard({
+  recipe,
+  onLike,
+  onSave,
+  onComment,
+  onViewRecipe,
+}: RecipeCardProps) {
   return (
-    <Card className="w-full max-w-md mx-auto bg-card border border-border rounded-lg overflow-hidden">
+    <Card
+      style={{ maxHeight: "650px" }}
+      className="w-full max-w-md mx-auto bg-card border border-border rounded-lg overflow-hidden"
+    >
       {/* Header */}
-      <div className="flex items-center gap-3 p-4 pb-2">
+      <div className="flex items-center gap-3 px-4 py-3">
         <Avatar className="w-10 h-10">
           <ImageWithFallback
             src={recipe.author.avatar}
@@ -36,7 +52,10 @@ export function RecipeCard({ recipe, onLike, onSave, onComment, onViewRecipe }: 
       </div>
 
       {/* Recipe Image */}
-      <div className="relative aspect-square cursor-pointer" onClick={() => onViewRecipe(recipe)}>
+      <div
+        className="relative aspect-square overflow-hidden cursor-pointer"
+        onClick={() => onViewRecipe(recipe)}
+      >
         <ImageWithFallback
           src={recipe.image}
           alt={recipe.title}
@@ -48,7 +67,7 @@ export function RecipeCard({ recipe, onLike, onSave, onComment, onViewRecipe }: 
           </Badge>
         </div>
         <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-center justify-center">
-          <Button 
+          <Button
             className="opacity-0 hover:opacity-100 transition-opacity"
             size="sm"
           >
@@ -58,7 +77,7 @@ export function RecipeCard({ recipe, onLike, onSave, onComment, onViewRecipe }: 
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between p-4 pb-2">
+      <div className="flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -66,7 +85,9 @@ export function RecipeCard({ recipe, onLike, onSave, onComment, onViewRecipe }: 
             onClick={() => onLike(recipe.id)}
             className={recipe.isLiked ? "text-red-500" : "text-foreground"}
           >
-            <Heart className={`w-5 h-5 ${recipe.isLiked ? "fill-current" : ""}`} />
+            <Heart
+              className={`w-5 h-5 ${recipe.isLiked ? "fill-current" : ""}`}
+            />
           </Button>
           <Button
             variant="ghost"
@@ -82,7 +103,9 @@ export function RecipeCard({ recipe, onLike, onSave, onComment, onViewRecipe }: 
           onClick={() => onSave(recipe.id)}
           className={recipe.isSaved ? "text-primary" : "text-foreground"}
         >
-          <Bookmark className={`w-5 h-5 ${recipe.isSaved ? "fill-current" : ""}`} />
+          <Bookmark
+            className={`w-5 h-5 ${recipe.isSaved ? "fill-current" : ""}`}
+          />
         </Button>
       </div>
 
@@ -100,7 +123,9 @@ export function RecipeCard({ recipe, onLike, onSave, onComment, onViewRecipe }: 
         </div>
 
         <h3 className="font-medium text-foreground mb-1">{recipe.title}</h3>
-        <p className="text-muted-foreground mb-2 line-clamp-2">{recipe.description}</p>
+        <p className="text-muted-foreground mb-2 line-clamp-2">
+          {recipe.description}
+        </p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-1 mb-2">
