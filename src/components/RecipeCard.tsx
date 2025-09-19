@@ -40,6 +40,8 @@ export function RecipeCard({
             src={recipe.author.avatar}
             alt={recipe.author.name}
             className="w-full h-full object-cover"
+            width={40}
+            height={40}
           />
         </Avatar>
         <div className="flex-1">
@@ -60,6 +62,7 @@ export function RecipeCard({
           src={recipe.image}
           alt={recipe.title}
           className="w-full h-full object-cover"
+          fill={true}
         />
         <div className="absolute top-3 left-3">
           <Badge className="bg-black/50 text-white border-none">

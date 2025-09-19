@@ -1,7 +1,13 @@
+import ProtectedRoute from "@/components/ProtectedRoute";
+
 export default function FeedsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="min-h-screen bg-background">{children}</div>;
+  return (
+    <ProtectedRoute>
+      <div className="min-h-screen bg-background">{children}</div>
+    </ProtectedRoute>
+  );
 }
