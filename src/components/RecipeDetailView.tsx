@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
-import { Clock, Users, ChefHat, Timer, Play, Pause, RotateCcw, Check } from "lucide-react";
+import {
+  Clock,
+  Users,
+  ChefHat,
+  Timer,
+  Play,
+  Pause,
+  RotateCcw,
+  Check,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -23,7 +32,11 @@ interface TimerState {
   originalSeconds: number;
 }
 
-export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewProps) {
+export function RecipeDetailView({
+  recipe,
+  isOpen,
+  onClose,
+}: RecipeDetailViewProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [timers, setTimers] = useState<{ [stepId: string]: TimerState }>({});
@@ -31,14 +44,14 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
   // Initialize timers for steps that have them
   useEffect(() => {
     const newTimers: { [stepId: string]: TimerState } = {};
-    recipe.steps.forEach(step => {
+    recipe.steps.forEach((step) => {
       if (step.timer) {
         newTimers[step.id] = {
           minutes: step.timer.minutes,
           seconds: step.timer.seconds,
           isRunning: false,
           originalMinutes: step.timer.minutes,
-          originalSeconds: step.timer.seconds
+          originalSeconds: step.timer.seconds,
         };
       }
     });
@@ -48,9 +61,9 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
   // Timer countdown effect
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimers(prevTimers => {
+      setTimers((prevTimers) => {
         const newTimers = { ...prevTimers };
-        Object.keys(newTimers).forEach(stepId => {
+        Object.keys(newTimers).forEach((stepId) => {
           const timer = newTimers[stepId];
           if (timer.isRunning) {
             if (timer.seconds > 0) {
@@ -72,26 +85,26 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
   }, []);
 
   const toggleTimer = (stepId: string) => {
-    setTimers(prev => ({
+    setTimers((prev) => ({
       ...prev,
       [stepId]: {
         ...prev[stepId],
-        isRunning: !prev[stepId].isRunning
-      }
+        isRunning: !prev[stepId].isRunning,
+      },
     }));
   };
 
   const resetTimer = (stepId: string) => {
-    const step = recipe.steps.find(s => s.id === stepId);
+    const step = recipe.steps.find((s) => s.id === stepId);
     if (step?.timer) {
-      setTimers(prev => ({
+      setTimers((prev) => ({
         ...prev,
         [stepId]: {
           ...prev[stepId],
           minutes: step.timer!.minutes,
           seconds: step.timer!.seconds,
-          isRunning: false
-        }
+          isRunning: false,
+        },
       }));
     }
   };
@@ -107,11 +120,13 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
   };
 
   const getIngredientById = (id: string): Ingredient | undefined => {
-    return recipe.ingredients.find(ing => ing.id === id);
+    return recipe.ingredients.find((ing) => ing.id === id);
   };
 
   const formatTime = (minutes: number, seconds: number): string => {
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const progress = (completedSteps.size / recipe.steps.length) * 100;
@@ -134,9 +149,10 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
                 src={recipe.image}
                 alt={recipe.title}
                 className="w-full h-full object-cover"
+                fill={true}
               />
             </div>
-            
+
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
@@ -144,11 +160,15 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
                     src={recipe.author.avatar}
                     alt={recipe.author.name}
                     className="w-full h-full object-cover"
+                    width={40}
+                    height={40}
                   />
                 </Avatar>
                 <div>
                   <p className="font-medium">{recipe.author.name}</p>
-                  <p className="text-muted-foreground">@{recipe.author.username}</p>
+                  <p className="text-muted-foreground">
+                    @{recipe.author.username}
+                  </p>
                 </div>
               </div>
 
@@ -198,7 +218,10 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
             <h3 className="mb-4">Ingredients</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {recipe.ingredients.map((ingredient) => (
-                <div key={ingredient.id} className="flex justify-between items-center p-2 rounded border">
+                <div
+                  key={ingredient.id}
+                  className="flex justify-between items-center p-2 rounded border"
+                >
                   <span>{ingredient.name}</span>
                   <span className="text-muted-foreground">
                     {ingredient.amount} {ingredient.unit}
@@ -213,14 +236,14 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
             <h3 className="mb-4">Cooking Steps</h3>
             <div className="space-y-4">
               {recipe.steps.map((step, index) => (
-                <Card 
-                  key={step.id} 
+                <Card
+                  key={step.id}
                   className={`p-4 border-l-4 ${
-                    completedSteps.has(index) 
-                      ? 'border-l-green-500 bg-green-50 dark:bg-green-950' 
-                      : index === currentStep 
-                        ? 'border-l-primary bg-primary/5' 
-                        : 'border-l-gray-300'
+                    completedSteps.has(index)
+                      ? "border-l-green-500 bg-green-50 dark:bg-green-950"
+                      : index === currentStep
+                      ? "border-l-primary bg-primary/5"
+                      : "border-l-gray-300"
                   }`}
                 >
                   <div className="space-y-3">
@@ -233,15 +256,21 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
                           )}
                         </h4>
                         {step.title && (
-                          <span className="text-muted-foreground">- {step.title}</span>
+                          <span className="text-muted-foreground">
+                            - {step.title}
+                          </span>
                         )}
                       </div>
                       <Button
-                        variant={completedSteps.has(index) ? "default" : "outline"}
+                        variant={
+                          completedSteps.has(index) ? "default" : "outline"
+                        }
                         size="sm"
                         onClick={() => toggleStepCompletion(index)}
                       >
-                        {completedSteps.has(index) ? "Completed" : "Mark Complete"}
+                        {completedSteps.has(index)
+                          ? "Completed"
+                          : "Mark Complete"}
                       </Button>
                     </div>
 
@@ -253,9 +282,14 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <Timer className="w-4 h-4" />
-                            <span className="font-medium">{step.timer.label}</span>
+                            <span className="font-medium">
+                              {step.timer.label}
+                            </span>
                             <span className="text-xl font-mono">
-                              {formatTime(timers[step.id].minutes, timers[step.id].seconds)}
+                              {formatTime(
+                                timers[step.id].minutes,
+                                timers[step.id].seconds
+                              )}
                             </span>
                           </div>
                           <div className="flex gap-2">
@@ -285,13 +319,16 @@ export function RecipeDetailView({ recipe, isOpen, onClose }: RecipeDetailViewPr
                     {/* Ingredients needed for this step */}
                     {step.ingredientsNeeded.length > 0 && (
                       <div className="space-y-2">
-                        <h5 className="font-medium text-sm">Ingredients needed:</h5>
+                        <h5 className="font-medium text-sm">
+                          Ingredients needed:
+                        </h5>
                         <div className="flex flex-wrap gap-2">
                           {step.ingredientsNeeded.map((ingredientId) => {
                             const ingredient = getIngredientById(ingredientId);
                             return ingredient ? (
                               <Badge key={ingredientId} variant="outline">
-                                {ingredient.amount} {ingredient.unit} {ingredient.name}
+                                {ingredient.amount} {ingredient.unit}{" "}
+                                {ingredient.name}
                               </Badge>
                             ) : null;
                           })}

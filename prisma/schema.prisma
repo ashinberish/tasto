@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password      String?
+  role          Role      @default(TASTER)
+  firstName     String?
+  lastName      String?
+  phoneNumber   String?   @unique
+  avatarUrl     String?
+  isActive      Boolean   @default(true)
+  emailVerified DateTime?
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Security & Account Management
+  failedLogins  Int       @default(0)
+  lockedUntil   DateTime? // temporarily lock account after N failures
+  resetToken    String?   @unique
+  resetTokenExp DateTime?
+
+  // Relations
+  sessions  Session[]
+  auditLogs AuditLog[]
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  action    String // "LOGIN", "PASSWORD_CHANGE", etc.
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  TASTER // basic user
+  COOK // regular contributor
+  CHEF_DE_PARTIE // moderator/curator
+  HEAD_CHEF // admin
+  MASTER_CHEF // super admin
+}
