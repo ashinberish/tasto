@@ -15,7 +15,7 @@ import { Badge } from "./ui/badge";
 import { Avatar } from "./ui/avatar";
 import { Progress } from "./ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./ImageWithFallback";
 import { Recipe, Ingredient } from "../types/recipe";
 
 interface RecipeDetailViewProps {

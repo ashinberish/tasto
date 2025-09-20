@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Avatar } from "./ui/avatar";
 import { Badge } from "./ui/badge";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./ImageWithFallback";
 import { Recipe } from "../types/recipe";
 
 interface RecipeCardProps {

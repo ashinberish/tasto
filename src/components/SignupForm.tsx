@@ -125,7 +125,6 @@ export function SignupForm({ onSwitchToLogin }: SignupFormProps) {
         lastName: "",
       });
 
-      // Optionally redirect to login after a short delay
       setTimeout(() => {
         if (onSwitchToLogin) {
           onSwitchToLogin();

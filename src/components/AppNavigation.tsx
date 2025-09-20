@@ -3,7 +3,7 @@ import { Search, Plus, Home, Bookmark, User, Bell, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Avatar } from "./ui/avatar";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./ImageWithFallback";
 import {
   DropdownMenu,
   DropdownMenuContent,
