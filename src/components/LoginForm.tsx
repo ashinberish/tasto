@@ -84,12 +84,10 @@ export function LoginForm({
         return;
       }
 
-      // Set a session cookie to track login state with proper attributes
       document.cookie = `auth-token=${data.user.id}; path=/; max-age=${
         30 * 24 * 60 * 60
       }; SameSite=Lax; Secure=${location.protocol === "https:"}`;
 
-      // Redirect to feeds page on successful login
       router.push("/feeds");
       router.refresh();
     } catch (err) {
@@ -114,18 +112,6 @@ export function LoginForm({
             Sign in to your account to continue sharing and discovering amazing
             recipes
           </CardDescription>
-          {/* <div className="bg-muted p-3 rounded-lg">
-            <p className="font-medium text-sm mb-1">Demo Credentials:</p>
-            <p className="text-xs text-muted-foreground">
-              Email: demo@recipe.com
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Password: any password
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Or try: error@example.com to see error handling
-            </p>
-          </div> */}
         </CardHeader>
 
         <CardContent>
